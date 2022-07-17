@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:map_exam/edit_screen.dart';
 import 'package:map_exam/note_notifier.dart';
 import 'package:provider/provider.dart';
 
 import 'api.dart';
+import 'note.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key, this.email=''}) : super(key: key);
@@ -42,6 +44,11 @@ class _HomeScreenState extends State<HomeScreen> {
   );
   
   }
+  Future deleteNote(Note currentNote) async {
+    NoteNotifier noteNotifier = Provider.of<NoteNotifier>(context, listen: false);
+    await deleteCurrentNote(currentNote);
+    getNote(noteNotifier,widget.email);
+  }
 
   void showIcon() {
   setState(() {
@@ -62,7 +69,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     NoteNotifier noteNotifier =
         Provider.of<NoteNotifier>(context, listen: false);
-          int? _selectedIndex;
+        //Note currentNote = noteNotifier.currentNote;
+  
 
     return Scaffold(
       appBar: AppBar(
@@ -96,7 +104,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: 
                 IconButton(
                   icon: const Icon(Icons.edit, color: Colors.blue),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditScreen(nid: noteNotifier.noteList[index].id.toString(), email: widget.email, option:'EDIT')));
+                  },
                 ),),
                 Visibility(
                 visible: _isVisible2,
@@ -106,17 +119,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     Icons.delete,
                     color: Colors.blue,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    // deleteNote(currentNote).then((value) =>{
+                    //   Navigator.push(context,MaterialPageRoute(builder: (context) => const HomeScreen()))
+                    // } );
+                  },
                 ),)
                 
               ],
             ),
           ),
           title:  Text('${noteNotifier.noteList[index].title}'),
-          
           subtitle:Visibility(
                 visible: _isVisible,
-                child: Text('${noteNotifier.noteList[index].info}')
+                child: Text('${noteNotifier.noteList[index].content}')
                 ),
           onTap: () {},
           onLongPress: () {
@@ -140,7 +156,12 @@ class _HomeScreenState extends State<HomeScreen> {
           FloatingActionButton(
             child: const Icon(Icons.add),
             tooltip: 'Add a new note',
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditScreen(nid: '', email: widget.email, option:'ADD')));
+            },
           ),
         ],
       ),

@@ -25,7 +25,7 @@ class NoteNotifier with ChangeNotifier{
   }
 
   deleteNode(Note note) {
-    _noteList.removeWhere((element) => element.nid == note.nid);
+    _noteList.removeWhere((element) => element.id == note.id);
     notifyListeners();
   }
 

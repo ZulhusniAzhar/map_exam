@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 class EditScreen extends StatefulWidget {
-  static Route route() => MaterialPageRoute(builder: (_) => const EditScreen());
+  //static Route route() => MaterialPageRoute(builder: (_) => const EditScreen());
 
-  const EditScreen({Key? key, this.nid=''}) : super(key: key);
+  const EditScreen({Key? key, this.nid='', this.email='',this.option=''}) : super(key: key);
   final String nid;
+  final String email;
+  final String option;
 
   @override
   State<EditScreen> createState() => _EditScreenState();

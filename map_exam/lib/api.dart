@@ -19,14 +19,14 @@ Future getNoteFuture(NoteNotifier noteNotifier, String email) async {
 Future deleteCurrentNote(Note currentNote) async {
   final CollectionReference db = FirebaseFirestore.instance.collection('notes');
 
-  await db.doc(currentNote.nid).delete();
+  await db.doc(currentNote.id).delete();
 }
 
 Future<Note> updateCurrentNote(Note note) async {
   final CollectionReference db = FirebaseFirestore.instance.collection('notes');
-  await db.doc(note.nid).update({
+  await db.doc(note.id).update({
     'title': note.title,
-    'info': note.info,
+    'info': note.content,
   });
   return note;
 }
