@@ -16,6 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
   //static Route route() => MaterialPageRoute(builder: (_) => const HomeScreen());
   bool _isVisible=true;
   bool _isVisible1=true;
+  bool _isVisible2=true;
 
   @override
   void initState(){
@@ -45,6 +46,13 @@ class _HomeScreenState extends State<HomeScreen> {
   void showIcon() {
   setState(() {
     _isVisible1 = !_isVisible1;
+  }
+  );
+  
+  }
+  void showBothIcon() {
+  setState(() {
+    _isVisible2 = !_isVisible2;
   }
   );
   
@@ -83,18 +91,24 @@ class _HomeScreenState extends State<HomeScreen> {
             width: 110.0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: [
+              children: [ Visibility(
+                visible: _isVisible2,
+                child: 
                 IconButton(
                   icon: const Icon(Icons.edit, color: Colors.blue),
                   onPressed: () {},
-                ),
+                ),),
+                Visibility(
+                visible: _isVisible2,
+                child:
                 IconButton(
                   icon: const Icon(
                     Icons.delete,
                     color: Colors.blue,
                   ),
                   onPressed: () {},
-                ),
+                ),)
+                
               ],
             ),
           ),
@@ -105,7 +119,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Text('${noteNotifier.noteList[index].info}')
                 ),
           onTap: () {},
-          onLongPress: () {},
+          onLongPress: () {
+            showBothIcon();
+          },
         ),
       ),
       floatingActionButton: Row(
