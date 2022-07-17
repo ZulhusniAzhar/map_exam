@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -14,11 +13,11 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _formKey = GlobalKey<FormState>();
+  //final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _auth= FirebaseAuth.instance;
-  late bool _success;
+  //late bool _success;
   
 
   
@@ -34,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
               .then((user) async {
 
             navigator.pushReplacement(
-                MaterialPageRoute(builder: (context) => HomeScreen()));
+                MaterialPageRoute(builder: (context) => HomeScreen(email:email)));
           });
         }catch (e) {
       return null;

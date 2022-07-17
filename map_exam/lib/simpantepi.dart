@@ -5,8 +5,7 @@ import 'package:provider/provider.dart';
 import 'api.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key, this.email=''}) : super(key: key);
-  final String email;
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -19,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState(){
     NoteNotifier noteNotifier =
         Provider.of<NoteNotifier>(context, listen: false);
-    getNote(noteNotifier,widget.email);
+    getNote(noteNotifier);
     super.initState();
   }
 
@@ -44,7 +43,6 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           CircleAvatar(
             backgroundColor: Colors.blue.shade200,
-            
             child:  Text(
               noteNotifier.noteList.length.toString(),
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22.0),
@@ -80,8 +78,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          title:  Text('${noteNotifier.noteList[index].title}'),
-          subtitle: Text('${noteNotifier.noteList[index].info}'),
+          title:  Text('${noteNotifier.noteList[1].title}'),
+          subtitle: const Text('Note content'),
           onTap: () {},
           onLongPress: () {},
         ),

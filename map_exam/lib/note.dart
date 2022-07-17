@@ -1,13 +1,14 @@
 class Note {
-  final dynamic id;
+  final dynamic nid;
   String? title;
-  String? content;
+  String? info;
+  String? userEmail;
 
-  Note({this.id = 0, this.title = '', this.content = ''});
+  Note({this.nid = 0, this.title = '', this.info = '', this.userEmail});
 
   Note.fromJson(Map<String, dynamic> json)
-      : this(id: json['id'], title: json['title'], content: json['content']);
+      : this(nid: json['nid'], title: json['title'], info: json['info'], userEmail: json['userEmail']);
 
   Map<String, dynamic> toJson() =>
-      {'id': id, 'title': title, 'content': content};
+      {'nid': nid, 'title': title, 'info': info, 'userEmail':userEmail};
 }

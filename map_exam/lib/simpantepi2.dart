@@ -5,8 +5,7 @@ import 'package:provider/provider.dart';
 import 'api.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key, this.email=''}) : super(key: key);
-  final String email;
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -19,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState(){
     NoteNotifier noteNotifier =
         Provider.of<NoteNotifier>(context, listen: false);
-    getNote(noteNotifier,widget.email);
+    getNote(noteNotifier);
     super.initState();
   }
 
@@ -44,7 +43,6 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           CircleAvatar(
             backgroundColor: Colors.blue.shade200,
-            
             child:  Text(
               noteNotifier.noteList.length.toString(),
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22.0),
@@ -55,35 +53,53 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: ListView.separated(
-        itemCount: noteNotifier.noteList.length,
-        separatorBuilder: (context, index) => const Divider(
-          color: Colors.blueGrey,
-        ),
-        itemBuilder: (context, index) => ListTile(
-          trailing: SizedBox(
-            width: 110.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.edit, color: Colors.blue),
-                  onPressed: () {},
+      body: Container(
+        color: Colors.transparent,
+        child: Padding(
+          padding: const EdgeInsets.all(36.0),
+          child: FutureBuilder(
+            future: getNoteFuture(noteNotifier),
+            builder: ((context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              return Consumer<NoteNotifier>(
+                builder: (context, value, child) => ListView.separated(
+                  itemCount: noteNotifier.noteList.length,
+                  separatorBuilder: (context, index) => const Divider(
+                  color: Colors.blueGrey,
                 ),
-                IconButton(
-                  icon: const Icon(
-                    Icons.delete,
-                    color: Colors.blue,
-                  ),
-                  onPressed: () {},
+                  child: noteNotifier.noteList
+                  .map((e) => ListTile(
+                    trailing: SizedBox(
+                      width: 110.0,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.edit, color: Colors.blue),
+                            onPressed: () {},
+                          ),
+                          IconButton(
+                            icon: const Icon(
+                              Icons.delete,
+                              color: Colors.blue,
+                            ),
+                            onPressed: () {},
+                          ),
+                        ],
+                      ),
+                    ),
+                    title: Text('${e.title}'),
+                    subtitle: const Text('Note content'),
+                    onTap: () {},
+                    onLongPress: () {},
+                  ),).toList(),
                 ),
-              ],
-            ),
+              );
+            }),
           ),
-          title:  Text('${noteNotifier.noteList[index].title}'),
-          subtitle: Text('${noteNotifier.noteList[index].info}'),
-          onTap: () {},
-          onLongPress: () {},
         ),
       ),
       floatingActionButton: Row(
