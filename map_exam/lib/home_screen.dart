@@ -14,6 +14,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   //static Route route() => MaterialPageRoute(builder: (_) => const HomeScreen());
+  bool _isVisible=true;
+  bool _isVisible1=true;
 
   @override
   void initState(){
@@ -32,11 +34,27 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     return noteList;
   }
+  void showSubtitle() {
+  setState(() {
+    _isVisible = !_isVisible;
+  }
+  );
+  
+  }
+
+  void showIcon() {
+  setState(() {
+    _isVisible1 = !_isVisible1;
+  }
+  );
+  
+  }
 
   @override
   Widget build(BuildContext context) {
     NoteNotifier noteNotifier =
         Provider.of<NoteNotifier>(context, listen: false);
+          int? _selectedIndex;
 
     return Scaffold(
       appBar: AppBar(
@@ -81,7 +99,11 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           title:  Text('${noteNotifier.noteList[index].title}'),
-          subtitle: Text('${noteNotifier.noteList[index].info}'),
+          
+          subtitle:Visibility(
+                visible: _isVisible,
+                child: Text('${noteNotifier.noteList[index].info}')
+                ),
           onTap: () {},
           onLongPress: () {},
         ),
@@ -90,9 +112,12 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
-              child: const Icon(Icons.menu),
+              child: _isVisible1==true? Icon(Icons.arrow_drop_up):Icon(Icons.menu),
               tooltip: 'Show less. Hide notes content',
-              onPressed: () {}),
+              onPressed: () {
+                  showSubtitle();
+                  showIcon();
+              }),
 
           /* Notes: for the "Show More" icon use: Icons.menu */
 
